@@ -15,6 +15,7 @@ const url = require('url');
 // Non-blocking, asynchronous way
 // fs.readFile('./txt/start.txt', 'utf-8', (err, data1) => {
 //     if(err) return console.log('ERROR!');
+
 //     fs.readFile(`./txt/${data1}.txt`, 'utf-8', (err, data2) => {
 //         console.log(data2);
 //         fs.readFile('./txt/append.txt', 'utf-8', (err, data3) => {
@@ -30,6 +31,9 @@ const url = require('url');
 
 ///////////////////////////////
 // SERVER
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
+const dataObj = JSON.parse(data);
+
 const server = http.createServer((req, res) => {
     const pathName = req.url;
 
@@ -37,6 +41,9 @@ const server = http.createServer((req, res) => {
         res.end('This is the OVERVIEW');
     } else if (pathName === '/product') {
         res.end('This is the PRODUCT');
+    } else if(pathName === '/api') {
+        res.writeHead(200, { 'content-type': 'application/json' });
+        res.end(data);
     } else {
         res.writeHead(404, {
             'content-type': 'text/html',
